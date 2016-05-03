@@ -1,0 +1,30 @@
+{
+    "name": "mikesimonson/symfony-form-entity-mapper",
+    "description": "A library that can instantiate automatically entities mapped by form despite by form despite having a constructor with argument",
+    "type": "library",
+    "require": {
+        "symfony/form": "2.3.*",
+        "zendframework/zend-code": "^2.2.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.3"
+    },
+    "autoload": {
+        "psr-0": {
+            "EntityFormMapper\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "EntityFormMapperTest\\": "tests"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mike",
+            "email": "mike.simonson@gmail.com",
+            "homepage": "http://mikesimonson.com"
+        }
+    ]
+}
