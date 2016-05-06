@@ -233,4 +233,33 @@ class FormMapperTest extends TypeTestCase
         $object = EntityWithSetterWithTypehintAllowingNull::fromArray($formData);
         $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
+
+    /**
+     * @dataProvider provideFormTypeThatShouldBeSkipped
+     */
+    public function testThatTheMapperSkipFormButtons($formTypeThatShouldBeSkipped)
+    {
+        $formData = [
+            'name' => 'test2',
+            'age' => '41',
+            'datetime' => '2016-05-05',
+        ];
+
+        $formType = new EntityWithSetterWithTypehintAllowingNullType();
+        $expected = EntityWithSetterWithTypehintAllowingNull::fromArray($formData);
+
+        $form = $this->factory->create($formType);
+        $form->add($formTypeThatShouldBeSkipped, $formTypeThatShouldBeSkipped);
+
+        $this->runFormTest($expected, $formData, $form);
+    }
+    
+    public function provideFormTypeThatShouldBeSkipped()
+    {
+        return [
+            ['button'],
+            ['reset'],
+            ['submit'],
+        ];
+    }
 }

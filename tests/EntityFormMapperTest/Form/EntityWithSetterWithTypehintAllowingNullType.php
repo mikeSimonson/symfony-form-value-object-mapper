@@ -44,7 +44,10 @@ class EntityWithSetterWithTypehintAllowingNullType extends AbstractType implemen
         $builder
             ->add('name')
             ->add('age')
-            ->add('datetime', 'date')
+            ->add('datetime', 'date', [
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+            ])
             ->setDataMapper($this)
             ;
     }
