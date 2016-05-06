@@ -28,15 +28,13 @@ class FormMapper
         return $form;
     }
 
-    public function mapFormsToData($form, &$data, $class = null)
+    public function mapFormsToData($form, &$data)
     {
         $form = iterator_to_array($form);
         $formElements = array_keys($form);
 
-        if ($class === null ) {
-            //Get The class that is mapped to this form
-            $class = $form[$formElements[0]]->getParent()->getConfig()->getDataClass();
-        }
+        //Get The class that is mapped to this form
+        $class = $form[$formElements[0]]->getParent()->getConfig()->getDataClass();
 
         try {
             if (!$data instanceof $class) { //trying to create a new object
