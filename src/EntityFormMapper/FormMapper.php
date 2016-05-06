@@ -3,11 +3,12 @@
 namespace EntityFormMapper;
 
 
+use EntityFormMapper\Exception\FormMapperException;
 use Symfony\Component\Form\Button;
 use Symfony\Component\Form\FormError;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\ClassReflection;
-use \InvalidArgumentException;
+use EntityFormMapper\Exception\InvalidArgumentException;
 
 class FormMapper
 {
@@ -45,7 +46,7 @@ class FormMapper
                 $data = $this->instantiateObject($class, $form);
             }
             $this->setAllThePropertiesOnTheObject($data, $form);
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $formElement = reset($form);
             $formElement->getParent()->addError(new FormError($e->getMessage()));
             if (is_callable([$data, 'getId']) && $data->getId() == null) { //Trying to create a new object
@@ -65,7 +66,7 @@ class FormMapper
             $class = get_class($obj);
             $class = $this->getClassImplementingMethod($class, $setterName);
             if ($class === false) {
-                throw new \Exception('Unable to find the method ' . $setterName . ' in object of class .' .
+                throw new FormMapperException('Unable to find the method ' . $setterName . ' in object of class .' .
                 $class);
             }
 
@@ -105,7 +106,7 @@ class FormMapper
             }
         }
 
-        throw new \Exception('Unable to find a method to set or add ' . $property. ' in object of class .' .
+        throw new FormMapperException('Unable to find a method to set or add ' . $property. ' in object of class .' .
                 $class);
     }
 
@@ -115,8 +116,7 @@ class FormMapper
         $reflectionClassGenerator = ClassGenerator::fromReflection($reflectionClass);
         if ($reflectionClassGenerator->getMethod($method) === false) {
             if ($reflectionClass->getParentClass() === false) {
-                throw new \Exception('Unable to find the method ' . $method);
-                return false;
+                throw new FormMapperException('Unable to find the method ' . $method);
             }
 
             return $this->getClassImplementingMethod($reflectionClass->getParentClass()->getName(), $method);
@@ -146,7 +146,7 @@ class FormMapper
 
             $typeHint = $this->getTypeHintFromMethodParam($classWithConstructor, '__construct', $param);
             if ($typeHint !== null && $form[$param->getName()]->getData() === null) {
-                throw new \InvalidArgumentException('The parameter ' . $param->getName() . ' from the constructor of the  class ' .
+                throw new InvalidArgumentException('The parameter ' . $param->getName() . ' from the constructor of the  class ' .
                 $class . ' cannot be null');
             }
             $params[] = $form[$param->getName()]->getData();
@@ -161,7 +161,7 @@ class FormMapper
             return $data->{$getterName}();
         }
 
-        throw new \Exception('Unable to find a getter for the property ' . $propertyName . ' on the form ' . $formName . '.');
+        throw new FormMapperException('Unable to find a getter for the property ' . $propertyName . ' on the form ' . $formName . '.');
     }
 
     private function getTypeHintFromMethodParam($class, $methodName, $param = null)
