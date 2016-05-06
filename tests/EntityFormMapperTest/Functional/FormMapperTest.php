@@ -39,7 +39,7 @@ use Symfony\Component\Form\Test\TypeTestCase;
 
 class FormMapperTest extends TypeTestCase
 {
-    
+
     private function runFormTestCreateAndUpdate($expected, $formData, $formType)
     {
         $form = $this->getCreateEntityForm($formType);
@@ -192,7 +192,7 @@ class FormMapperTest extends TypeTestCase
             'age' => '42',
             'thing' => null,
         ];
-        
+
         $type = new EntityConstructorWithTypehintAllowingNullType();
         $object = EntityConstructorWithTypehintAllowingNull::fromArray($formData);
         $this->runFormTestCreateAndUpdate($object, $formData, $type);
@@ -217,7 +217,7 @@ class FormMapperTest extends TypeTestCase
         $object = EntityWithSetterWithTypehint::fromArray($formData);
         $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
-    
+
     public function testMapEntityWithSetterAllowingNullWithoutTypeHint()
     {
         $formData = [
@@ -229,7 +229,7 @@ class FormMapperTest extends TypeTestCase
         $object = EntityWithSetterWithoutTypehintAllowingNull::fromArray($formData);
         $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
-    
+
     public function testMapEntityWithSetterAllowingNullWithTypeHint()
     {
         $formData = [
@@ -262,7 +262,7 @@ class FormMapperTest extends TypeTestCase
 
         $this->runFormTest($expected, $formData, $form);
     }
-    
+
     public function provideFormTypeThatShouldBeSkipped()
     {
         return [
@@ -271,7 +271,7 @@ class FormMapperTest extends TypeTestCase
             ['submit'],
         ];
     }
-    
+
     public function testShouldThrowAnExceptionInCaseOfMissingGetter()
     {
         $formData = [
@@ -281,7 +281,8 @@ class FormMapperTest extends TypeTestCase
 
         $type = new EntityWithMissingGetterType();
         $object = EntityWithMissingGetter::fromArray($formData);
-        $this->setExpectedException(FormMapperException::class, 'Unable to find a getter for the property name on the form entity_with_missing_getter.');
+        $this->setExpectedException(FormMapperException::class,
+            'Unable to find a getter for the property name on the form entity_with_missing_getter.');
         $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
 
@@ -295,7 +296,7 @@ class FormMapperTest extends TypeTestCase
 
         $type = new EntityConstructorWithStrongTypehintType();
         $form = $this->factory->create($type);
-        
+
         // submit the data to the form directly
         $form->submit($formData);
 
@@ -309,7 +310,7 @@ class FormMapperTest extends TypeTestCase
             $this->assertArrayHasKey($key, $children);
         }
     }
-    
+
     public function testShouldThrowAnExceptionIfFieldNotMappedByEntity()
     {
         $formData = [
@@ -320,7 +321,8 @@ class FormMapperTest extends TypeTestCase
         $form = $this->factory->create($type);
 
         // submit the data to the form directly
-        $this->setExpectedException(FormMapperException::class, 'Unable to find the method setSomeMissingEntityProperty');
+        $this->setExpectedException(FormMapperException::class,
+            'Unable to find the method setSomeMissingEntityProperty');
         $form->submit($formData);
     }
 
