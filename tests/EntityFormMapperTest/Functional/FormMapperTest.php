@@ -8,6 +8,7 @@ use EntityFormMapperTest\Entity\ChildAndParentEntityWithConstructor;
 use EntityFormMapperTest\Entity\EntityConstructorWithStrongTypehint;
 use EntityFormMapperTest\Entity\EntityConstructorWithTypehintAllowingNull;
 use EntityFormMapperTest\Entity\EntityWithMissingGetter;
+use EntityFormMapperTest\Entity\EntityWithMissingSetter;
 use EntityFormMapperTest\Entity\EntityWithSetterWithoutTypehintAllowingNull;
 use EntityFormMapperTest\Entity\EntityWithSetterWithTypehint;
 use EntityFormMapperTest\Entity\EntityWithSetterWithTypehintAllowingNull;
@@ -22,6 +23,7 @@ use EntityFormMapperTest\Form\ChildAndParentWithConstructorType;
 use EntityFormMapperTest\Form\EntityConstructorWithStrongTypehintType;
 use EntityFormMapperTest\Form\EntityConstructorWithTypehintAllowingNullType;
 use EntityFormMapperTest\Form\EntityWithMissingGetterType;
+use EntityFormMapperTest\Form\EntityWithMissingSetterType;
 use EntityFormMapperTest\Form\EntityWithSetterWithoutTypehintAllowingNullType;
 use EntityFormMapperTest\Form\EntityWithSetterWithTypehintAllowingNullType;
 use EntityFormMapperTest\Form\EntityWithSetterWithTypehintType;
@@ -320,5 +322,18 @@ class FormMapperTest extends TypeTestCase
         // submit the data to the form directly
         $this->setExpectedException(FormMapperException::class, 'Unable to find the method setSomeMissingEntityProperty');
         $form->submit($formData);
+    }
+
+    public function testShouldThrowAnExceptionIfSetterIsMissing()
+    {
+        $formData = [
+            'name' => 'test2',
+            'age' => '41',
+        ];
+
+        $type = new EntityWithMissingSetterType();
+        $object = EntityWithMissingSetter::fromArray($formData);
+        $this->setExpectedException(FormMapperException::class, 'Unable to find the method setName');
+        $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
 }
