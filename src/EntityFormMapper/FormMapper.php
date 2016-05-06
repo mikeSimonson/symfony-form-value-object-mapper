@@ -70,12 +70,13 @@ class FormMapper
              * we skip the set.
              */
             $data = $formElement->getData();
-            $required = $formElement->getConfig()->getRequired();
-            if ($required === false && $data === null && $isParamTypeHint !== null) {
+            $isFormElementRequired = $formElement->getConfig()->getRequired();
+            $isParamAllowingNullValue = $this->getAcceptNullForSetter($class, $setterName);
+            if ($isFormElementRequired === false && $data === null && $isParamTypeHint !== null) {
                 continue;
             }
 
-            if ($required === true && $data === null && $isParamTypeHint !== null) {
+            if ($isFormElementRequired === true && $data === null && $isParamTypeHint !== null && $isParamAllowingNullValue === false) {
                 throw new InvalidArgumentException($propertyName . ' is required.');
             }
 
@@ -148,6 +149,22 @@ class FormMapper
             return array_values($parameters)[0]->getType();
         }
 
-        return  $parameters[$param->getName()]->getType();
+        return $parameters[$param->getName()]->getType();
+    }
+
+    private function getAcceptNullForSetter($class, $setterName)
+    {
+        $reflectionClass = new ClassReflection($class);
+        $reflectionClass = ClassGenerator::fromReflection($reflectionClass);
+        $method = $reflectionClass->getMethod($setterName)->getSourceContent();
+        $posOpenParenthesis = stripos($method, '(') + 1;
+        $posClosingParenthesis = stripos($method, ')');
+        $parameter = substr($method, $posOpenParenthesis, $posClosingParenthesis - $posOpenParenthesis);
+        $parameterPart = explode('=', $parameter);
+        if (!isset($parameterPart[1])) {
+            return false;
+        }
+
+        return strtolower(trim($parameterPart[1])) === 'null';
     }
 }
