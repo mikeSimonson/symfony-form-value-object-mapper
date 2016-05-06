@@ -25,6 +25,7 @@ use EntityFormMapperTest\Form\EntityWithMissingGetterType;
 use EntityFormMapperTest\Form\EntityWithSetterWithoutTypehintAllowingNullType;
 use EntityFormMapperTest\Form\EntityWithSetterWithTypehintAllowingNullType;
 use EntityFormMapperTest\Form\EntityWithSetterWithTypehintType;
+use EntityFormMapperTest\Form\FormWithUnmappedFieldType;
 use EntityFormMapperTest\Form\ParentEntityWithConstructorWithoutTypeHintType;
 use EntityFormMapperTest\Form\ParentEntityWithConstructorWithTypeHintType;
 use EntityFormMapperTest\Form\ConstructorLessEntityType;
@@ -305,5 +306,19 @@ class FormMapperTest extends TypeTestCase
         foreach (array_keys($formData) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
+    }
+    
+    public function testShouldThrowAnExceptionIfFieldNotMappedByEntity()
+    {
+        $formData = [
+            'someMissingEntityProperty' => 'boom',
+        ];
+
+        $type = new FormWithUnmappedFieldType();
+        $form = $this->factory->create($type);
+
+        // submit the data to the form directly
+        $this->setExpectedException(FormMapperException::class, 'Unable to find the method setSomeMissingEntityProperty');
+        $form->submit($formData);
     }
 }
