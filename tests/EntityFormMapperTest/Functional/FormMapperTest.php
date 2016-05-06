@@ -65,6 +65,8 @@ class FormMapperTest extends TypeTestCase
         foreach (array_keys($formData) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
+
+        $this->assertEmpty($form->getErrors());
     }
 
     private function getCreateEntityForm($formType)
