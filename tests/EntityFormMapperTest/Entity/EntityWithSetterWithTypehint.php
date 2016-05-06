@@ -28,7 +28,7 @@ class EntityWithSetterWithTypehint
             if ($property == 'thing') {
                 $value = EntityConstructorWithTypehint::fromArray($value);
             }
-            $object->{'set' . ucfirst($property)}($value);
+            $object->{$property} = $value;
         }
         
         return $object;
