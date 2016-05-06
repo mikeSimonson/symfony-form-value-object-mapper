@@ -32,9 +32,6 @@ class FormMapper
     {
         $form = iterator_to_array($form);
         $formElements = array_keys($form);
-        if (empty($formElements)) {
-            return;
-        }
 
         if ($class === null ) {
             //Get The class that is mapped to this form
