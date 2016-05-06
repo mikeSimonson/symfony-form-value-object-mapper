@@ -26,6 +26,7 @@ use EntityFormMapperTest\Form\EntityConstructorWithTypehintAllowingNullType;
 use EntityFormMapperTest\Form\EntityWithMissingGetterType;
 use EntityFormMapperTest\Form\EntityWithMissingSetterType;
 use EntityFormMapperTest\Form\EntityWithSetterWithoutTypehintAllowingNullType;
+use EntityFormMapperTest\Form\EntityWithSetterWithStrongTypehintType;
 use EntityFormMapperTest\Form\EntityWithSetterWithTypehintAllowingNullType;
 use EntityFormMapperTest\Form\EntityWithSetterWithTypehintNotRequiredType;
 use EntityFormMapperTest\Form\EntityWithSetterWithTypehintType;
@@ -362,5 +363,38 @@ class FormMapperTest extends TypeTestCase
 
         $form = $this->getUpdateEntityForm($expected, $formType);
         $this->runFormTest($expected, $formData, $form);
+    }
+
+    public function testShouldTriggerAnInvalidArgumentExceptionIfSetterTypehintedAndNotAllowingNull()
+    {
+        $formData = [
+            'name' => 'test2',
+            'age' => '41',
+            'datetime' => null,
+        ];
+
+        $objectData = [
+            'name' => 'test1',
+            'age' => '42',
+            'datetime' => '2015-02-03',
+        ];
+
+        $formType = new EntityWithSetterWithStrongTypehintType();
+        $expected = EntityWithSetterWithStrongTypehint::fromArray($objectData);
+
+        $form = $this->getUpdateEntityForm($expected, $formType);
+        $form->submit($formData);
+
+        $this->assertTrue($form->isSynchronized());
+        $this->assertEquals($expected, $form->getData());
+
+        $view = $form->createView();
+        $children = $view->children;
+
+        foreach (array_keys($formData) as $key) {
+            $this->assertArrayHasKey($key, $children);
+        }
+
+        $this->assertContains('datetime is required', $form->getErrors()[0]->getMessage());
     }
 }
