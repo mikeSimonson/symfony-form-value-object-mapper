@@ -31,10 +31,17 @@ use Symfony\Component\Form\Test\TypeTestCase;
 class FormMapperTest extends TypeTestCase
 {
     
-    private function runFormTest($expected, $formData, $formType)
+    private function runFormTestCreateAndUpdate($expected, $formData, $formType)
     {
-        $form = $this->factory->create($formType);
+        $form = $this->getCreateEntityForm($formType);
+        $this->runFormTest($expected, $formData, $form);
 
+        $form = $this->getUpdateEntityForm($expected, $formType);
+        $this->runFormTest($expected, $formData, $form);
+    }
+
+    private function runFormTest($expected, $formData, $form)
+    {
         // submit the data to the form directly
         $form->submit($formData);
 
@@ -49,6 +56,16 @@ class FormMapperTest extends TypeTestCase
         }
     }
 
+    private function getCreateEntityForm($formType)
+    {
+        return $this->factory->create($formType);
+    }
+
+    private function getUpdateEntityForm($expected, $formType)
+    {
+        return $this->factory->create($formType, $expected);
+    }
+
     public function testMapEntityWithoutConstructor()
     {
         $formData = [
@@ -57,7 +74,7 @@ class FormMapperTest extends TypeTestCase
         ];
         $type = new ConstructorLessEntityType();
         $object = ConstructorLessEntity::fromArray($formData);
-        $this->runFormTest($object, $formData, $type);
+        $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
 
     public function testMapEntityWithEmptyConstructor()
@@ -68,7 +85,7 @@ class FormMapperTest extends TypeTestCase
         ];
         $type = new EmptyEntityConstructorType();
         $object = EmptyEntityConstructor::fromArray($formData);
-        $this->runFormTest($object, $formData, $type);
+        $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
 
     public function testMapEntityWithConstructorWithoutTypeHint()
@@ -80,7 +97,7 @@ class FormMapperTest extends TypeTestCase
 
         $type = new EntityConstructorWithoutTypehintType();
         $object = EntityConstructorWithoutTypehint::fromArray($formData);
-        $this->runFormTest($object, $formData, $type);
+        $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
 
     public function testMapEntityWithConstructorWithTypeHint()
@@ -96,7 +113,7 @@ class FormMapperTest extends TypeTestCase
 
         $type = new EntityConstructorWithTypehintType();
         $object = EntityConstructorWithTypehint::fromArray($formData);
-        $this->runFormTest($object, $formData, $type);
+        $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
 
     public function testMapEntityWithoutConstructorAndWithParentClass()
@@ -109,7 +126,7 @@ class FormMapperTest extends TypeTestCase
 
         $type = new ConstructorLessEntityWithConstructorLessParentClassType();
         $object = ConstructorLessEntityWithConstructorLessParentClass::fromArray($formData);
-        $this->runFormTest($object, $formData, $type);
+        $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
 
     public function testMapEntityWithConstructorWithoutTypehintInParentClassAndWithoutInChildClass()
@@ -122,7 +139,7 @@ class FormMapperTest extends TypeTestCase
 
         $type = new ParentEntityWithConstructorWithoutTypeHintType();
         $object = ParentEntityWithConstructorWithoutTypeHint::fromArray($formData);
-        $this->runFormTest($object, $formData, $type);
+        $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
 
     public function testMapEntityWithConstructorInParentClassAndInChildClass()
@@ -139,7 +156,7 @@ class FormMapperTest extends TypeTestCase
 
         $type = new ChildAndParentWithConstructorType();
         $object = ChildAndParentEntityWithConstructor::fromArray($formData);
-        $this->runFormTest($object, $formData, $type);
+        $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
 
     public function testMapEntityWithConstructorInParentClassWithTypeHint()
@@ -156,7 +173,7 @@ class FormMapperTest extends TypeTestCase
 
         $type = new ParentEntityWithConstructorWithTypeHintType();
         $object = ParentEntityWithConstructorWithTypeHint::fromArray($formData);
-        $this->runFormTest($object, $formData, $type);
+        $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
 
     public function testMapEntityWithConstructorInParentClassWithTypeHintAllowingNull()
@@ -169,7 +186,7 @@ class FormMapperTest extends TypeTestCase
         
         $type = new EntityConstructorWithTypehintAllowingNullType();
         $object = EntityConstructorWithTypehintAllowingNull::fromArray($formData);
-        $this->runFormTest($object, $formData, $type);
+        $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
 
     public function testMapEntityWithSetterWithTypeHint()
@@ -189,7 +206,7 @@ class FormMapperTest extends TypeTestCase
 
         $type = new EntityWithSetterWithTypehintType();
         $object = EntityWithSetterWithTypehint::fromArray($formData);
-        $this->runFormTest($object, $formData, $type);
+        $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
     
     public function testMapEntityWithSetterAllowingNullWithoutTypeHint()
@@ -201,7 +218,7 @@ class FormMapperTest extends TypeTestCase
 
         $type = new EntityWithSetterWithoutTypehintAllowingNullType();
         $object = EntityWithSetterWithoutTypehintAllowingNull::fromArray($formData);
-        $this->runFormTest($object, $formData, $type);
+        $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
     
     public function testMapEntityWithSetterAllowingNullWithTypeHint()
@@ -214,6 +231,6 @@ class FormMapperTest extends TypeTestCase
 
         $type = new EntityWithSetterWithTypehintAllowingNullType();
         $object = EntityWithSetterWithTypehintAllowingNull::fromArray($formData);
-        $this->runFormTest($object, $formData, $type);
+        $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
 }
