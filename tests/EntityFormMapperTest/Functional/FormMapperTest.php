@@ -3,7 +3,9 @@
 namespace EntityFormMapperTest\Functional;
 
 use EntityFormMapper\Exception\FormMapperException;
+use EntityFormMapper\Exception\InvalidArgumentException;
 use EntityFormMapperTest\Entity\ChildAndParentEntityWithConstructor;
+use EntityFormMapperTest\Entity\EntityConstructorWithStrongTypehint;
 use EntityFormMapperTest\Entity\EntityConstructorWithTypehintAllowingNull;
 use EntityFormMapperTest\Entity\EntityWithMissingGetter;
 use EntityFormMapperTest\Entity\EntityWithSetterWithoutTypehintAllowingNull;
@@ -17,6 +19,7 @@ use EntityFormMapperTest\Entity\EmptyEntityConstructor;
 use EntityFormMapperTest\Entity\EntityConstructorWithoutTypehint;
 use EntityFormMapperTest\Entity\EntityConstructorWithTypehint;
 use EntityFormMapperTest\Form\ChildAndParentWithConstructorType;
+use EntityFormMapperTest\Form\EntityConstructorWithStrongTypehintType;
 use EntityFormMapperTest\Form\EntityConstructorWithTypehintAllowingNullType;
 use EntityFormMapperTest\Form\EntityWithMissingGetterType;
 use EntityFormMapperTest\Form\EntityWithSetterWithoutTypehintAllowingNullType;
@@ -277,5 +280,30 @@ class FormMapperTest extends TypeTestCase
         $object = EntityWithMissingGetter::fromArray($formData);
         $this->setExpectedException(FormMapperException::class, 'Unable to find a getter for the property name on the form entity_with_missing_getter.');
         $this->runFormTestCreateAndUpdate($object, $formData, $type);
+    }
+
+    public function testShouldTriggerAnInvalidArgumentExceptionInCaseOfNullValueInConstructor()
+    {
+        $formData = [
+            'name' => 'test2',
+            'age' => '41',
+            'thing' => null,
+        ];
+
+        $type = new EntityConstructorWithStrongTypehintType();
+        $form = $this->factory->create($type);
+        
+        // submit the data to the form directly
+        $form->submit($formData);
+
+        $this->assertTrue($form->isSynchronized());
+        $this->assertEquals(null, $form->getData());
+
+        $view = $form->createView();
+        $children = $view->children;
+
+        foreach (array_keys($formData) as $key) {
+            $this->assertArrayHasKey($key, $children);
+        }
     }
 }
