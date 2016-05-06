@@ -10,6 +10,7 @@ use EntityFormMapperTest\Entity\EntityConstructorWithTypehintAllowingNull;
 use EntityFormMapperTest\Entity\EntityWithMissingGetter;
 use EntityFormMapperTest\Entity\EntityWithMissingSetter;
 use EntityFormMapperTest\Entity\EntityWithSetterWithoutTypehintAllowingNull;
+use EntityFormMapperTest\Entity\EntityWithSetterWithStrongTypehint;
 use EntityFormMapperTest\Entity\EntityWithSetterWithTypehint;
 use EntityFormMapperTest\Entity\EntityWithSetterWithTypehintAllowingNull;
 use EntityFormMapperTest\Entity\ParentEntityWithConstructorWithoutTypeHint;
@@ -26,6 +27,7 @@ use EntityFormMapperTest\Form\EntityWithMissingGetterType;
 use EntityFormMapperTest\Form\EntityWithMissingSetterType;
 use EntityFormMapperTest\Form\EntityWithSetterWithoutTypehintAllowingNullType;
 use EntityFormMapperTest\Form\EntityWithSetterWithTypehintAllowingNullType;
+use EntityFormMapperTest\Form\EntityWithSetterWithTypehintNotRequiredType;
 use EntityFormMapperTest\Form\EntityWithSetterWithTypehintType;
 use EntityFormMapperTest\Form\FormWithUnmappedFieldType;
 use EntityFormMapperTest\Form\ParentEntityWithConstructorWithoutTypeHintType;
@@ -337,5 +339,26 @@ class FormMapperTest extends TypeTestCase
         $object = EntityWithMissingSetter::fromArray($formData);
         $this->setExpectedException(FormMapperException::class, 'Unable to find the method setName');
         $this->runFormTestCreateAndUpdate($object, $formData, $type);
+    }
+
+    public function testShouldNotSetAPropertyIfItsTypeHintedAndNotRequiredByTheForm()
+    {
+        $formData = [
+            'name' => 'test2',
+            'age' => '41',
+            'datetime' => null,
+        ];
+
+        $objectData = [
+            'name' => 'test1',
+            'age' => '42',
+            'datetime' => '2015-02-03',
+        ];
+
+        $formType = new EntityWithSetterWithTypehintNotRequiredType();
+        $expected = EntityWithSetterWithStrongTypehint::fromArray($objectData);
+
+        $form = $this->getUpdateEntityForm($expected, $formType);
+        $this->runFormTest($expected, $formData, $form);
     }
 }
