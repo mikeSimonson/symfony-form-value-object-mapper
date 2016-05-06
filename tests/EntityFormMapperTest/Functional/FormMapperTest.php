@@ -2,8 +2,10 @@
 
 namespace EntityFormMapperTest\Functional;
 
+use EntityFormMapper\Exception\FormMapperException;
 use EntityFormMapperTest\Entity\ChildAndParentEntityWithConstructor;
 use EntityFormMapperTest\Entity\EntityConstructorWithTypehintAllowingNull;
+use EntityFormMapperTest\Entity\EntityWithMissingGetter;
 use EntityFormMapperTest\Entity\EntityWithSetterWithoutTypehintAllowingNull;
 use EntityFormMapperTest\Entity\EntityWithSetterWithTypehint;
 use EntityFormMapperTest\Entity\EntityWithSetterWithTypehintAllowingNull;
@@ -16,6 +18,7 @@ use EntityFormMapperTest\Entity\EntityConstructorWithoutTypehint;
 use EntityFormMapperTest\Entity\EntityConstructorWithTypehint;
 use EntityFormMapperTest\Form\ChildAndParentWithConstructorType;
 use EntityFormMapperTest\Form\EntityConstructorWithTypehintAllowingNullType;
+use EntityFormMapperTest\Form\EntityWithMissingGetterType;
 use EntityFormMapperTest\Form\EntityWithSetterWithoutTypehintAllowingNullType;
 use EntityFormMapperTest\Form\EntityWithSetterWithTypehintAllowingNullType;
 use EntityFormMapperTest\Form\EntityWithSetterWithTypehintType;
@@ -261,5 +264,18 @@ class FormMapperTest extends TypeTestCase
             ['reset'],
             ['submit'],
         ];
+    }
+    
+    public function testShouldThrowAnExceptionInCaseOfMissingGetter()
+    {
+        $formData = [
+            'name' => 'test2',
+            'age' => '41',
+        ];
+
+        $type = new EntityWithMissingGetterType();
+        $object = EntityWithMissingGetter::fromArray($formData);
+        $this->setExpectedException(FormMapperException::class, 'Unable to find a getter for the property name on the form entity_with_missing_getter.');
+        $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
 }
