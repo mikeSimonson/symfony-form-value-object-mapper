@@ -83,24 +83,6 @@ class FormMapper
         }
     }
 
-    private function findPropertySetterName($property, $object)
-    {
-        $accessors = ['get', 'add'];
-        $class = get_class($object);
-
-        foreach ($accessors as $accessor) {
-            $methodName = $accessor . ucfirst($property);
-            $class = $this->getClassImplementingMethod($class, $methodName);
-
-            if ($class !== false) {
-                return $methodName;
-            }
-        }
-
-        throw new FormMapperException('Unable to find a method to set or add ' . $property. ' in object of class .' .
-                $class);
-    }
-
     private function getClassImplementingMethod($class, $method)
     {
         $reflectionClass = new ClassReflection($class);
