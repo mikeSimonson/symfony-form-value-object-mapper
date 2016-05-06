@@ -60,10 +60,6 @@ class FormMapper
             $setterName = 'set' . ucfirst($propertyName);
             $class = get_class($obj);
             $class = $this->getClassImplementingMethod($class, $setterName);
-            if ($class === false) {
-                throw new FormMapperException('Unable to find the method ' . $setterName . ' in object of class .' .
-                $class);
-            }
 
             $isParamTypeHint = $this->getTypeHintFromMethodParam($class, $setterName);
 
