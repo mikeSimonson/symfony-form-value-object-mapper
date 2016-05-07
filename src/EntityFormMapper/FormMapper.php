@@ -21,7 +21,7 @@ class FormMapper
                 continue;
             }
             if ($data) {
-                $form[$key]->setData($this->getData($data, $key, $form[$key]->getParent()->getConfig()->getName()));
+                $form[$key]->setData($this->getEntityData($data, $key, $form[$key]->getParent()->getConfig()->getName()));
             }
         }
 
@@ -132,7 +132,7 @@ class FormMapper
         return $reflectionClass->newInstanceArgs($params);
     }
 
-    private function getData($data, $propertyName, $formName) {
+    private function getEntityData($data, $propertyName, $formName) {
         $getterName = 'get' . ucfirst($propertyName);
         if (is_callable([$data, $getterName])) {
             return $data->{$getterName}();
