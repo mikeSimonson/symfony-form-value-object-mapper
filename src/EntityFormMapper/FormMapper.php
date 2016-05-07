@@ -36,15 +36,18 @@ class FormMapper
         //Get The class that is mapped to this form
         $class = $form[$formElements[0]]->getParent()->getConfig()->getDataClass();
 
+        //Determine if we are updating an entity of creating a new one
+        $isUpdatingEntity = $data instanceof $class;
+
         try {
-            if (!$data instanceof $class) { //trying to create a new object
+            if (!$isUpdatingEntity) { //trying to create a new object
                 $data = $this->instantiateObject($class, $form);
             }
             $this->setAllThePropertiesOnTheObject($data, $form);
         } catch (InvalidArgumentException $e) {
             $formElement = reset($form);
             $formElement->getParent()->addError(new FormError($e->getMessage()));
-            if (is_callable([$data, 'getId']) && $data->getId() == null) { //Trying to create a new object
+            if (!$isUpdatingEntity) { //Trying to create a new object
                 $data = null;
             }
         }
