@@ -1,6 +1,6 @@
 <?php
 
-namespace EntityFormMapper\Exception;
+namespace MikeSimonson\EntityFormMapper\Exception;
 
 
 interface FormMapperExceptionInterface

@@ -1,10 +1,10 @@
 <?php
 
-namespace EntityFormMapperTest\Form;
+namespace MikeSimonson\EntityFormMapperTest\Form;
 
 
-use EntityFormMapper\FormMapper;
-use EntityFormMapperTest\Entity\ConstructorLessEntity;
+use MikeSimonson\EntityFormMapper\FormMapper;
+use MikeSimonson\EntityFormMapperTest\Entity\ConstructorLessEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception;

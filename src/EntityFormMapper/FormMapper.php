@@ -1,14 +1,14 @@
 <?php
 
-namespace EntityFormMapper;
+namespace MikeSimonson\EntityFormMapper;
 
 
-use EntityFormMapper\Exception\FormMapperFormMapperException;
+use MikeSimonson\EntityFormMapper\Exception\FormMapperFormMapperException;
 use Symfony\Component\Form\Button;
 use Symfony\Component\Form\FormError;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\ClassReflection;
-use EntityFormMapper\Exception\InvalidArgumentFormMapperException;
+use MikeSimonson\EntityFormMapper\Exception\InvalidArgumentFormMapperException;
 
 class FormMapper
 {

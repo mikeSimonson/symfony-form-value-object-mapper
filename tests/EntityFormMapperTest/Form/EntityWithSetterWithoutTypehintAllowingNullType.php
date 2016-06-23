@@ -1,14 +1,14 @@
 <?php
 
-namespace EntityFormMapperTest\Form;
+namespace MikeSimonson\EntityFormMapperTest\Form;
 
 
-use EntityFormMapper\FormMapper;
-use EntityFormMapperTest\Entity\ConstructorLessEntity;
-use EntityFormMapperTest\Entity\EmptyEntityConstructor;
-use EntityFormMapperTest\Entity\EntityWithSetterWithoutTypehintAllowingNull;
-use EntityFormMapperTest\Entity\EntityWithSetterWithTypehint;
-use EntityFormMapperTest\Entity\EntityWithSetterWithTypehintAllowingNull;
+use MikeSimonson\EntityFormMapper\FormMapper;
+use MikeSimonson\EntityFormMapperTest\Entity\ConstructorLessEntity;
+use MikeSimonson\EntityFormMapperTest\Entity\EmptyEntityConstructor;
+use MikeSimonson\EntityFormMapperTest\Entity\EntityWithSetterWithoutTypehintAllowingNull;
+use MikeSimonson\EntityFormMapperTest\Entity\EntityWithSetterWithTypehint;
+use MikeSimonson\EntityFormMapperTest\Entity\EntityWithSetterWithTypehintAllowingNull;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception;

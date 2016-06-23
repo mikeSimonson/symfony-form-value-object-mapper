@@ -1,9 +1,9 @@
 <?php
 
-namespace EntityFormMapper\Exception;
+namespace MikeSimonson\EntityFormMapper\Exception;
 
 
-use EntityFormMapper\Exception\FormMapperExceptionInterface;
+use MikeSimonson\EntityFormMapper\Exception\FormMapperExceptionInterface;
 use Exception;
 
 class FormMapperFormMapperException extends Exception implements FormMapperExceptionInterface

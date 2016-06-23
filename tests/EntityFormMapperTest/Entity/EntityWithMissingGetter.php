@@ -1,6 +1,6 @@
 <?php
 
-namespace EntityFormMapperTest\Entity;
+namespace MikeSimonson\EntityFormMapperTest\Entity;
 
 
 class EntityWithMissingGetter

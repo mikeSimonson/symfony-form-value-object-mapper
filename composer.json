@@ -10,13 +10,13 @@
         "phpunit/phpunit": "^5.3"
     },
     "autoload": {
-        "psr-0": {
-            "EntityFormMapper\\": "src"
+        "psr-4": {
+            "MikeSimonson\\": "src"
         }
     },
     "autoload-dev": {
-        "psr-0": {
-            "EntityFormMapperTest\\": "tests"
+        "psr-4": {
+            "MikeSimonson\\": "tests"
         }
     },
     "license": "MIT",
