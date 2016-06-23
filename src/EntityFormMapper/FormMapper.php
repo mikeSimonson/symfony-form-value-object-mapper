@@ -5,12 +5,13 @@ namespace MikeSimonson\EntityFormMapper;
 
 use MikeSimonson\EntityFormMapper\Exception\FormMapperFormMapperException;
 use Symfony\Component\Form\Button;
+use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormError;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\ClassReflection;
 use MikeSimonson\EntityFormMapper\Exception\InvalidArgumentFormMapperException;
 
-class FormMapper
+class FormMapper implements DataMapperInterface
 {
 
     public function mapDataToForms($data, $form)
