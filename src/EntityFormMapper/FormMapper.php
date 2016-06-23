@@ -60,7 +60,9 @@ class FormMapper implements DataMapperInterface
             if ($formElement instanceof Button) {
                 continue;
             }
-
+            /**
+             * TODO add test where it should fail with a parent entity when the class is defined outside the foreach
+             */
             $setterName = 'set' . ucfirst($propertyName);
             $class = get_class($obj);
             $class = $this->getClassImplementingMethod($class, $setterName);
