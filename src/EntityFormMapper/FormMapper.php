@@ -3,12 +3,12 @@
 namespace EntityFormMapper;
 
 
-use EntityFormMapper\Exception\FormMapperException;
+use EntityFormMapper\Exception\FormMapperFormMapperException;
 use Symfony\Component\Form\Button;
 use Symfony\Component\Form\FormError;
 use Zend\Code\Generator\ClassGenerator;
 use Zend\Code\Reflection\ClassReflection;
-use EntityFormMapper\Exception\InvalidArgumentException;
+use EntityFormMapper\Exception\InvalidArgumentFormMapperException;
 
 class FormMapper
 {
@@ -44,7 +44,7 @@ class FormMapper
                 $data = $this->instantiateObject($class, $form);
             }
             $this->setAllThePropertiesOnTheObject($data, $form);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentFormMapperException $e) {
             $formElement = reset($form);
             $formElement->getParent()->addError(new FormError($e->getMessage()));
             if (!$isUpdatingEntity) { //Trying to create a new object
@@ -80,7 +80,7 @@ class FormMapper
             }
 
             if ($isFormElementRequired === true && $data === null && $isParamTypeHint !== null && $isParamAllowingNullValue === false) {
-                throw new InvalidArgumentException($propertyName . ' is required.');
+                throw new InvalidArgumentFormMapperException($propertyName . ' is required.');
             }
 
             $obj->{$setterName}($data);
@@ -93,7 +93,7 @@ class FormMapper
         $reflectionClassGenerator = ClassGenerator::fromReflection($reflectionClass);
         if ($reflectionClassGenerator->getMethod($method) === false) {
             if ($reflectionClass->getParentClass() === false) {
-                throw new FormMapperException('Unable to find the method ' . $method);
+                throw new FormMapperFormMapperException('Unable to find the method ' . $method);
             }
 
             return $this->getClassImplementingMethod($reflectionClass->getParentClass()->getName(), $method);
@@ -121,9 +121,10 @@ class FormMapper
             
             $classWithConstructor = $this->getClassImplementingMethod($class, '__construct');
 
-            $typeHint = $this->getTypeHintFromMethodParam($classWithConstructor, '__construct', $param);
-            if ($typeHint !== null && $form[$param->getName()]->getData() === null) {
-                throw new InvalidArgumentException('The parameter ' . $param->getName() . ' from the constructor of the  class ' .
+
+            if ($form[$param->getName()]->getData() === null 
+                && $this->assertFunctionParamCanBeNull($classWithConstructor, '__construct', $param)) {
+                throw new InvalidArgumentFormMapperException('The parameter ' . $param->getName() . ' from the constructor of the  class ' .
                 $class . ' cannot be null');
             }
             $params[] = $form[$param->getName()]->getData();
@@ -132,13 +133,27 @@ class FormMapper
         return $reflectionClass->newInstanceArgs($params);
     }
 
+    /**
+     * We are not taking into account the fact that a typehint parameter can accept null as it shouldn't be in 
+     * the constructor if it can be set to null.
+     * 
+     * @param $classWithConstructor
+     * @param $function
+     * @param $parameter
+     * @return bool
+     */
+    private function assertFunctionParamCanBeNull($classWithConstructor, $function, $parameter)
+    {
+        return $this->getTypeHintFromMethodParam($classWithConstructor, $function, $parameter) === null;
+    }
+
     private function getEntityData($data, $propertyName, $formName) {
         $getterName = 'get' . ucfirst($propertyName);
         if (is_callable([$data, $getterName])) {
             return $data->{$getterName}();
         }
 
-        throw new FormMapperException('Unable to find a getter for the property ' . $propertyName . ' on the form ' . $formName . '.');
+        throw new FormMapperFormMapperException('Unable to find a getter for the property ' . $propertyName . ' on the form ' . $formName . '.');
     }
 
     private function getTypeHintFromMethodParam($class, $methodName, $param = null)

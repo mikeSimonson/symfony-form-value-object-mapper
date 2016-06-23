@@ -3,7 +3,7 @@
 namespace EntityFormMapper\Exception;
 
 
-interface ExceptionInterface
+interface FormMapperExceptionInterface
 {
 
 }

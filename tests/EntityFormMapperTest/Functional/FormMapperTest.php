@@ -2,8 +2,8 @@
 
 namespace EntityFormMapperTest\Functional;
 
-use EntityFormMapper\Exception\FormMapperException;
-use EntityFormMapper\Exception\InvalidArgumentException;
+use EntityFormMapper\Exception\FormMapperFormMapperException;
+use EntityFormMapper\Exception\InvalidArgumentFormMapperException;
 use EntityFormMapperTest\Entity\ChildAndParentEntityWithConstructor;
 use EntityFormMapperTest\Entity\EntityConstructorWithStrongTypehint;
 use EntityFormMapperTest\Entity\EntityConstructorWithTypehintAllowingNull;
@@ -286,7 +286,7 @@ class FormMapperTest extends TypeTestCase
 
         $type = new EntityWithMissingGetterType();
         $object = EntityWithMissingGetter::fromArray($formData);
-        $this->setExpectedException(FormMapperException::class,
+        $this->setExpectedException(FormMapperFormMapperException::class,
             'Unable to find a getter for the property name on the form entity_with_missing_getter.');
         $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
@@ -326,7 +326,7 @@ class FormMapperTest extends TypeTestCase
         $form = $this->factory->create($type);
 
         // submit the data to the form directly
-        $this->setExpectedException(FormMapperException::class,
+        $this->setExpectedException(FormMapperFormMapperException::class,
             'Unable to find the method setSomeMissingEntityProperty');
         $form->submit($formData);
     }
@@ -340,7 +340,7 @@ class FormMapperTest extends TypeTestCase
 
         $type = new EntityWithMissingSetterType();
         $object = EntityWithMissingSetter::fromArray($formData);
-        $this->setExpectedException(FormMapperException::class, 'Unable to find the method setName');
+        $this->setExpectedException(FormMapperFormMapperException::class, 'Unable to find the method setName');
         $this->runFormTestCreateAndUpdate($object, $formData, $type);
     }
 

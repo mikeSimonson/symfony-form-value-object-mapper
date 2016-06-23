@@ -3,10 +3,10 @@
 namespace EntityFormMapper\Exception;
 
 
-use EntityFormMapper\Exception\ExceptionInterface;
+use EntityFormMapper\Exception\FormMapperExceptionInterface;
 use Exception;
 
-class FormMapperException extends Exception implements ExceptionInterface
+class FormMapperFormMapperException extends Exception implements FormMapperExceptionInterface
 {
 
 }
