@@ -25,4 +25,11 @@
             </exclude>
         </whitelist>
     </filter>
+
+    <logging>
+        <log type="coverage-html" target="build/coverage" title="Symfony Entity Form Mapper Test Suite"
+             charset="UTF-8" yui="true" highlight="true" lowUpperBound="5"
+             highLowerBound="70" />
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+    </logging>
 </phpunit>
