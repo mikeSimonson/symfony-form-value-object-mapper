@@ -124,9 +124,8 @@ class FormMapper implements DataMapperInterface
             
             $classWithConstructor = $this->getClassImplementingMethod($class, '__construct');
 
-
-            if ($form[$param->getName()]->getData() === null 
-                && $this->assertFunctionParamCanBeNull($classWithConstructor, '__construct', $param)) {
+            if ($form[$param->getName()]->getData() === null
+                && !$this->assertFunctionParamCanBeNull($classWithConstructor, '__construct', $param)) {
                 throw new InvalidArgumentFormMapperException('The parameter ' . $param->getName() . ' from the constructor of the  class ' .
                 $class . ' cannot be null');
             }
