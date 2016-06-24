@@ -3,7 +3,7 @@
 namespace MikeSimonson\EntityFormMapper;
 
 
-use MikeSimonson\EntityFormMapper\Exception\FormMapperFormMapperException;
+use MikeSimonson\EntityFormMapper\Exception\FormMapperException;
 use Symfony\Component\Form\Button;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormError;
@@ -96,7 +96,7 @@ class FormMapper implements DataMapperInterface
         $reflectionClassGenerator = ClassGenerator::fromReflection($reflectionClass);
         if ($reflectionClassGenerator->getMethod($method) === false) {
             if ($reflectionClass->getParentClass() === false) {
-                throw new FormMapperFormMapperException('Unable to find the method ' . $method);
+                throw new FormMapperException('Unable to find the method ' . $method);
             }
 
             return $this->getClassImplementingMethod($reflectionClass->getParentClass()->getName(), $method);
@@ -156,7 +156,7 @@ class FormMapper implements DataMapperInterface
             return $data->{$getterName}();
         }
 
-        throw new FormMapperFormMapperException('Unable to find a getter for the property ' . $propertyName . ' on the form ' . $formName . '.');
+        throw new FormMapperException('Unable to find a getter for the property ' . $propertyName . ' on the form ' . $formName . '.');
     }
 
     private function getTypeHintFromMethodParam($class, $methodName, $param = null)

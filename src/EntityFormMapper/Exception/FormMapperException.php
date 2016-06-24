@@ -6,7 +6,7 @@ namespace MikeSimonson\EntityFormMapper\Exception;
 use MikeSimonson\EntityFormMapper\Exception\FormMapperExceptionInterface;
 use Exception;
 
-class FormMapperFormMapperException extends Exception implements FormMapperExceptionInterface
+class FormMapperException extends Exception implements FormMapperExceptionInterface
 {
 
 }
