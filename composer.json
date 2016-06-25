@@ -1,6 +1,6 @@
 {
-    "name": "mikesimonson/symfony-form-entity-mapper",
-    "description": "A library that can instantiate automatically entities mapped by form despite by form despite having a constructor with argument",
+    "name": "mikesimonson/symfony-form-value-object-mapper",
+    "description": "A library that can instantiate automatically value object mapped by Symfony forms despite having a constructor with arguments.",
     "type": "library",
     "require": {
         "symfony/form": "2.3.*",
