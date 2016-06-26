@@ -1,4 +1,4 @@
-# Value object Symfony Form Mapper
+# Symfony Form Value Object Mapper
 
 [![Build Status](https://travis-ci.org/mikeSimonson/symfony-form-entity-mapper.svg?branch=master)](https://travis-ci.org/mikeSimonson/symfony-form-entity-mapper)
 [![Code Coverage](https://scrutinizer-ci.com/g/mikeSimonson/symfony-form-entity-mapper/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/mikeSimonson/symfony-form-entity-mapper/?branch=master)
@@ -19,7 +19,7 @@ In the 10% left, it still make more sense to do the mapping manually than do try
 ## Install
 
 ```sh
-composer require mikesimonson/symfony-entity-form-mapper
+composer require mikesimonson/symfony-form-value-object-mapper
 ```
 
 ## Usage
