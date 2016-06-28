@@ -118,6 +118,12 @@ class FormMapper implements DataMapperInterface
         $params = [];
         $i=0;
         foreach($reflectionParameters as $name => $param) {
+            if (!array_key_exists($param->getName(), $form)) {
+                throw new FormMapperException(
+                    'The constructor required parameter "' . $param->getName() . '" is not in the form.'
+                );
+            }
+
             if ($i === $nbOfRequiredParameters) {
                 break;
             }

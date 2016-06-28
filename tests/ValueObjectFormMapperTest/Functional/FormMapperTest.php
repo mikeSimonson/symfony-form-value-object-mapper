@@ -31,6 +31,7 @@ use MikeSimonson\ValueObjectFormMapperTest\Form\EntityWithSetterWithTypehintAllo
 use MikeSimonson\ValueObjectFormMapperTest\Form\EntityWithSetterWithTypehintNotRequiredType;
 use MikeSimonson\ValueObjectFormMapperTest\Form\EntityWithSetterWithTypehintType;
 use MikeSimonson\ValueObjectFormMapperTest\Form\FormWithUnmappedFieldType;
+use MikeSimonson\ValueObjectFormMapperTest\Form\FormWithWrongPropertyNameInConstructorType;
 use MikeSimonson\ValueObjectFormMapperTest\Form\ParentEntityWithConstructorWithoutTypeHintType;
 use MikeSimonson\ValueObjectFormMapperTest\Form\ParentEntityWithConstructorWithTypeHintType;
 use MikeSimonson\ValueObjectFormMapperTest\Form\ConstructorLessEntityType;
@@ -396,5 +397,21 @@ class FormMapperTest extends TypeTestCase
         }
 
         $this->assertContains('datetime is required', $form->getErrors()[0]->getMessage());
+    }
+    
+    public function testShouldThrowAFormMapperExceptionIfRequiredParameterOfConstructorIsMissingFromTheForm()
+    {
+        $formData = [
+            'name' => 'test',
+            'age' => '42',
+            'thing' => [
+                'wrongPropertyName' => 'subtest',
+                'age' => 43,
+            ],
+        ];
+
+        $type = new FormWithWrongPropertyNameInConstructorType();
+        $this->setExpectedException(FormMapperException::class, 'The constructor required parameter "name" is not in the form.');
+        $this->runFormTestCreateAndUpdate(null, $formData, $type);
     }
 }
