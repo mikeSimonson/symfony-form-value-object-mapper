@@ -157,9 +157,12 @@ class FormMapper implements DataMapperInterface
     }
 
     private function getEntityData($data, $propertyName, $formName) {
-        $getterName = 'get' . ucfirst($propertyName);
-        if (is_callable([$data, $getterName])) {
-            return $data->{$getterName}();
+        $prefixes = ['get', 'is'];
+        foreach($prefixes as $prefix) {
+            $getterName = $prefix . ucfirst($propertyName);
+            if (is_callable([$data, $getterName])) {
+                return $data->{$getterName}();
+            }
         }
 
         throw new FormMapperException('Unable to find a getter for the property ' . $propertyName . ' on the form ' . $formName . '.');
