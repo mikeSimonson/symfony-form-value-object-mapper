@@ -8,9 +8,10 @@ php:
 
 sudo: false
 
-allow_failures:
-  - php: hhvm
-  - php: nightly
+matrix:
+  allow_failures:
+    - php: hhvm
+    - php: nightly
 
 script:
   - ./vendor/bin/phpunit -v
