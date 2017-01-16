@@ -44,6 +44,7 @@ class ConstructorLessEntityType extends AbstractType implements DataMapperInterf
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
             ])
+            ->add('boolean')
             ->setDataMapper($this)
             ;
     }

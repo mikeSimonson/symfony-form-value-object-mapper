@@ -15,6 +15,11 @@ class ConstructorLessEntity
      * @var \DateTime
      */
     private $datetime;
+
+    /**
+     * @var boolean
+     */
+    private $boolean;
     
     public static function fromArray($array)
     {
@@ -61,5 +66,13 @@ class ConstructorLessEntity
         $this->datetime = $datetime;
     }
 
-    
+    public function isBoolean()
+    {
+        return $this->boolean;
+    }
+
+    public function setBoolean($boolean)
+    {
+        $this->boolean = $boolean;
+    }
 }
