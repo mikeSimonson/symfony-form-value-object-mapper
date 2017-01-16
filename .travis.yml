@@ -2,10 +2,15 @@ language: php
 php:
   - '5.6'
   - '7.0'
+  - '7.1'
   - hhvm
   - nightly
 
 sudo: false
+
+allow_failures:
+  - php: hhvm
+  - php: nightly
 
 script:
   - ./vendor/bin/phpunit -v
