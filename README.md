@@ -6,7 +6,7 @@
 ## Motivation
 
 Value object usage with the Symfony form component.
-[https://webmozart.io/blog/2015/09/09/value-objects-in-symfony-forms/](There is a great post from Webmozart explaining how to use the Symfony form component with value object.)
+There is a [great post](https://webmozart.io/blog/2015/09/09/value-objects-in-symfony-forms/) from Webmozart explaining how to use the Symfony form component with value object.
 But sometimes people might get discourage to use value object because they now need to do the mapping between the object and the form manually.
 It can look daunting when the number of properties of the object is high.
 
